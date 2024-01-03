@@ -1,0 +1,83 @@
+﻿@*
+******************************************************************************
+ *
+ * File: Index.cshtml
+ *
+ * Description: View for   controller  Index.cshtml action.
+ *
+ * Copyright (C) 2024 by Dmitry Sinitsyn
+ *
+ * Date: 4.1.2024	 Authors:  Dmitry Sinitsyn
+ *
+ *****************************************************************************
+*@
+
+@model IEnumerable<HotelModels.Booking>
+
+@{
+    ViewData["Title"] = "My Bookings";
+}
+
+<h1>My Bookings</h1>
+
+<p>
+    <a asp-controller="Rooms" asp-action="Index">Create New</a>
+</p>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Room)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@{
+    var checkInTime = (TimeSpan)ViewData["CheckInTime"];
+    var cancellationLimit = (int)ViewData["CancellationLimit"];
+}
+@foreach (var item in Model) {
+
+    item.SetCancellationDeadline(checkInTime, cancellationLimit);
+
+    var rowClass = item.IsIrrevocable? "table-secondary":"";
+
+    <tr class="@rowClass">
+        <td>@item.Room.ToString()</td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Duration)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Deadline)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+            @if (!item.IsIrrevocable)
+            {
+                <span>|</span>
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            }  
+        </td>
+    </tr>
+}
+    </tbody>
+</table>

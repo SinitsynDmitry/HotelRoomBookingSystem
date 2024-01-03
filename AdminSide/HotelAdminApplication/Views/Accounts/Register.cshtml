@@ -1,0 +1,81 @@
+﻿@*
+******************************************************************************
+ *
+ * File: Register.cshtml
+ *
+ * Description: View for   controller  Register.cshtml action.
+ *
+ * Copyright (C) 2024 by Dmitry Sinitsyn
+ *
+ * Date: 4.1.2024	 Authors:  Dmitry Sinitsyn
+ *
+ *****************************************************************************
+*@
+
+@model HotelAdminApplication.DTOs.RegisterDto;
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>@ViewData["Title"]</h1>
+<section>
+    <div class="row d-flex justify-content-center col-12">
+        <div class="col-4 border border-primary rounded m-20">
+            <form id="registerForm" asp-action="Register" method="post" class="py-4">
+                <h2>Create a new account.</h2>
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label asp-for="Email">Email</label>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="FirstName" class="form-control" autocomplete="firstName" aria-required="true" placeholder="First Name" />
+                    <label asp-for="FirstName">First Name</label>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Surname" class="form-control" autocomplete="surname" aria-required="true" placeholder="Surname" />
+                    <label asp-for="Surname">Surname</label>
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <label asp-for="Password">Password</label>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <label asp-for="ConfirmPassword">Confirm Password</label>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="ID_code" class="form-control" data-val="false" aria-required="false" placeholder="#00000000000" />
+                    <label asp-for="ID_code">ID</label>
+                    <span asp-validation-for="ID_code" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="PhoneNumber" class="form-control" data-val="false" aria-required="false" placeholder="Phone" />
+                    <label asp-for="PhoneNumber">Phone</label>
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <select asp-for="Role" class="form-select" data-val="false" aria-required="false" placeholder="Role">
+                        <option selected="@(Model?.Role==HotelModels.Helpers.Constants.DefaultRole)" value="@HotelModels.Helpers.Constants.DefaultRole">@HotelModels.Helpers.Constants.DefaultRole</option>
+                        <option selected="@(Model?.Role==HotelModels.Helpers.Constants.ManagersRole)" value="@HotelModels.Helpers.Constants.ManagersRole">@HotelModels.Helpers.Constants.ManagersRole</option>
+                        <option selected="@(Model?.Role==HotelModels.Helpers.Constants.AdministratorsRole)" value="@HotelModels.Helpers.Constants.AdministratorsRole">@HotelModels.Helpers.Constants.AdministratorsRole</option>
+                    </select>
+                    <label asp-for="Role">Role</label>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

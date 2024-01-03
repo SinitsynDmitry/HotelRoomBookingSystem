@@ -1,0 +1,108 @@
+﻿@*
+******************************************************************************
+ *
+ * File: Details.cshtml
+ *
+ * Description: View for   controller  Details.cshtml action.
+ *
+ * Copyright (C) 2024 by Dmitry Sinitsyn
+ *
+ * Date: 4.1.2024	 Authors:  Dmitry Sinitsyn
+ *
+ *****************************************************************************
+*@
+
+@model HotelModels.RoomAndBookings
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Room</h4>
+    <hr />
+    @if(Model != null)
+    {
+    <dl class="row">            
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Room.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.NumberOfBeds)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Room.NumberOfBeds)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.Price)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Room.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Room.Description)
+        </dd>
+    </dl>
+
+    var booking = new Booking();
+    var daysList = (List<DateTimeOffset>)ViewData["Days"];
+    <hr style="margin:5px 0"; />
+    var timeLineModel = new HotelApplication.ViewModels.TimeLineModel(daysList, Model.Bookings, true);
+    <div class="form-group">       
+        <label class="control-label" style="font-weight: bold;">Select days</label>
+        <label class="control-label">@ViewData["DateRange"]</label>
+        <partial name="_TimeLine" model="@timeLineModel" />
+    </div>
+    <div class="row" >
+        <form id="createBooking" asp-action="Create" asp-controller="Bookings" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" id="roomId" name="booking.RoomId" value="@Model?.Room.Id" />
+            <input type="hidden" name="booking.UserId" value="UserId" />
+                       
+            <div class="form-group">
+                    <label asp-for="@booking.StartTime" class="control-label"></label>
+                @{
+                    var bookingStartTime = "";
+                    if (booking.StartTime != DateTimeOffset.MinValue)
+                    {
+                        bookingStartTime = booking.StartTime.ToString("dd.MM.yyyy");
+                    }
+                }
+                <input asp-for="@booking.StartTime" class="form-control" value="@bookingStartTime" readonly />
+                    <span asp-validation-for="@booking.StartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                    <label asp-for="@booking.Duration" class="control-label"></label>
+                    <input asp-for="@booking.Duration" type="text" class="form-control" readonly />
+                    <span asp-validation-for="@booking.Duration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                    <label asp-for="@booking.Description" class="control-label"></label>
+                    <input asp-for="@booking.Description" class="form-control" />
+            </div>
+                <div class="form-group" style="align-self:end;">
+                <input id="booking_submit" type="submit" value="Book this room" disabled class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+}
+</div>
+<div style="margin-top: 10px;">
+    <a asp-action="Index">Back to List</a>
+</div>
+<style>
+
+    #createBooking {
+        display: flex;
+        gap:10px;
+    }
+
+</style>

@@ -1,0 +1,272 @@
+﻿@*
+******************************************************************************
+ *
+ * File: Index.cshtml
+ *
+ * Description: View for   controller  Index.cshtml action.
+ *
+ * Copyright (C) 2024 by Dmitry Sinitsyn
+ *
+ * Date: 4.1.2024	 Authors:  Dmitry Sinitsyn
+ *
+ *****************************************************************************
+*@
+
+ @using HotelApplication.ViewModels
+    @model SearchRoomsViewModel
+
+@{
+    ViewData["Title"] = "Available rooms";
+}
+
+<h1>Available rooms</h1>
+
+<form method="get" asp-action="Index">
+    <div class="inner-form">
+        <div class="input-field order-wrap">
+        </div>
+
+        <div class="input-field picker-wrap">
+            <div class="icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"></path>
+                </svg>
+            </div>
+            <section>
+                <input id="daterangepicker" type="text" name="daterange" value="@Model.RoomSearchRequest?.DateRange?.ToString()" />
+            </section>
+        </div>
+        <div class="input-field price-wrap">
+            <div class="icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><path d="M0,0h24v24H0V0z" fill="none" /></g><g><path d="M20,4H4C2.89,4,2.01,4.89,2.01,6L2,18c0,1.11,0.89,2,2,2h16c1.11,0,2-0.89,2-2V6C22,4.89,21.11,4,20,4z M12,10H8v1h3 c0.55,0,1,0.45,1,1v3c0,0.55-0.45,1-1,1h-1v1H8v-1H6v-2h4v-1H7c-0.55,0-1-0.45-1-1V9c0-0.55,0.45-1,1-1h1V7h2v1h2V10z M16,16.25 l-2-2h4L16,16.25z M14,10l2-2l2,2H14z" /></g></svg>
+            </div>
+            <section id="price" class="price-range">
+                <div class="wrapper">
+                    <div class="price-input">
+                        <div class="field">
+                            <span>Min</span>
+                            <input type="number" min="5" name="minPrice" pattern="\d*" class="input-min" value="@Model.RoomSearchRequest.MinPrice">
+                        </div>
+                        <div class="separator"></div>
+                        <div class="field">
+                            <span>Max</span>
+                            <input type="number" min="5" name="maxPrice" pattern="\d*" class="input-max" value="@Model.RoomSearchRequest.MaxPrice">
+                        </div>
+                    </div>
+                    <div class="slider">
+                        <div class="progress"></div>
+                    </div>
+                    <div class="range-input">
+                        <input type="range" class="range-min" min="0" max="500" value="@Model.RoomSearchRequest.MinPrice" step="25">
+                        <input type="range" class="range-max" min="0" max="500" value="@Model.RoomSearchRequest.MaxPrice" step="25">
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="input-field beds-wrap">
+            <div class="icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                </svg>
+            </div>
+            <section id="beds" class="price-range">
+                <div class="wrapper">
+                    <div class="price-input">
+                        <div class="field">
+                            <span>Min</span>
+                            <input type="number" min="1" pattern="\d*" name="minBeds" class="input-min" value="@Model.RoomSearchRequest.MinBeds">
+                        </div>
+                        <div class="separator"></div>
+                        <div class="field">
+                            <span>Max</span>
+                            <input type="number" min="1" pattern="\d*" name="maxBeds" class="input-max" value="@Model.RoomSearchRequest.MaxBeds">
+                        </div>
+                    </div>
+                    <div class="slider">
+                        <div class="progress"></div>
+                    </div>
+                    <div class="range-input">
+                        <input type="range" class="range-min" min="0" max="5" value="@Model.RoomSearchRequest.MinBeds" step="1">
+                        <input type="range" class="range-max" min="0" max="5" value="@Model.RoomSearchRequest.MaxBeds" step="1">
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="input-field search-wrap">
+            <input type="submit" value="SEARCH" class="btn btn-search" />
+        </div>
+    </div>
+
+<script>
+    initRange('#price', 50);
+    initRange('#beds', 0);
+
+    $('#daterangepicker').daterangepicker({
+            "showDropdowns": true,
+            // "autoApply": true,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Tomorrow': [moment().add(1, 'days'), moment().add(1, 'days')],
+                'Next 7 Days': [moment(), moment().add(6, 'days')],
+                'Next 30 Days': [moment(), moment().add(29, 'days')],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Next Month': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
+            },
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " <-> ",
+                "applyLabel": "Apply",
+                "cancelLabel": "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel": "W",
+                "daysOfWeek": [
+                    "Su",
+                    "Mo",
+                    "Tu",
+                    "We",
+                    "Th",
+                    "Fr",
+                    "Sa"
+                ],
+                "monthNames": [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December"
+                ],
+                "firstDay": 1
+            },
+            "alwaysShowCalendars": true,
+            // "startDate": "25/12/2023",
+            // "endDate": "25/01/2024",
+            "minDate": "@DateTime.Now.Date",
+            "maxDate": "@DateTime.Now.AddYears(1).Date",
+            "opens": "center"
+        }, function (start, end, label) {
+            console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+        });
+
+    function initRange(containerSelector, gap) {
+        const rangeInput = document.querySelectorAll(containerSelector + " .range-input input"),
+            priceInput = document.querySelectorAll(containerSelector + " .price-input input"),
+            range = document.querySelector(containerSelector + " .slider .progress");
+        let priceGap = gap;
+        let minRange = parseInt(priceInput[0].value),
+            maxRange = parseInt(priceInput[1].value);
+        range.style.left = (minRange / rangeInput[0].max) * 100 + "%";
+        range.style.right = 100 - (maxRange / rangeInput[1].max) * 100 + "%";
+
+
+        priceInput.forEach((input) => {
+            input.addEventListener("input", (e) => {
+                let minPrice = parseInt(priceInput[0].value),
+                    maxPrice = parseInt(priceInput[1].value);
+
+                if (maxPrice - minPrice >= priceGap && maxPrice <= rangeInput[1].max) {
+                    if (e.target.className === "input-min") {
+                        rangeInput[0].value = minPrice;
+                        range.style.left = (minPrice / rangeInput[0].max) * 100 + "%";
+                    } else {
+                        rangeInput[1].value = maxPrice;
+                        range.style.right = 100 - (maxPrice / rangeInput[1].max) * 100 + "%";
+                    }
+                }
+            });
+        });
+
+        rangeInput.forEach((input) => {
+            input.addEventListener("input", (e) => {
+                let minVal = parseInt(rangeInput[0].value),
+                    maxVal = parseInt(rangeInput[1].value);
+
+                if (maxVal - minVal < priceGap) {
+                    if (e.target.className === "range-min") {
+                        rangeInput[0].value = maxVal - priceGap;
+                    } else {
+                        rangeInput[1].value = minVal + priceGap;
+                    }
+                } else {
+                    priceInput[0].value = minVal;
+                    priceInput[1].value = maxVal;
+                    range.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+                    range.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+                }
+            });
+        });
+    }
+
+</script>
+
+</form>
+@{
+    if (Model.Rooms?.Count()>0)
+    {
+        var daterange = Model.RoomSearchRequest?.DateRange?.ToString();
+        HotelModels.Room first = Model.Rooms.FirstOrDefault().Room;
+
+        var daysList = Model.RoomSearchRequest.DateRange.GetDaysBetween();
+
+    <table class="table rooms-table">   
+        <thead>
+            <tr>                 
+                <th>
+                    @Html.DisplayNameFor(model => first.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => first.NumberOfBeds)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => first.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => first.Description)
+                </th>
+                <th></th>
+            </tr>
+        </thead>           
+        <tbody>
+            @foreach (var row in Model.Rooms)
+            {
+                var item = row.Room;
+                <tr>                      
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumberOfBeds)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" asp-route-daterange="@daterange">Details</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan ="5">
+                        <a asp-action="Details" asp-route-id="@item.Id" asp-route-daterange="@daterange">
+                        @{
+                            var timeLineModel = new HotelApplication.ViewModels.TimeLineModel(daysList, row.Bookings,false);
+                            <partial name="_TimeLine" model="@timeLineModel" />
+                        }
+                        </a>
+                    </td>
+                </tr>
+                }
+        </tbody>
+    </table>
+    }
+}

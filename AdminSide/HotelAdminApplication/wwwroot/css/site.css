@@ -1,0 +1,369 @@
+/*
+ ******************************************************************************
+ *
+ * File: site.css
+ *
+ * Description: A lot of styles for site.css css.
+ *
+ * Copyright (C) 2024 by Dmitry Sinitsyn
+ *
+ * Date: 4.1.2024	 Authors: Dmitry Sinitsyn
+ *
+ *****************************************************************************
+*/
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+table.bookings-table tr.hide-table-padding td {
+    padding: 0;
+}
+
+table.bookings-table .expand-button {
+    position: relative;
+    cursor: pointer;
+    width: 1rem;
+    height: 1rem;
+    padding: 8px;
+}
+
+table.bookings-table .accordion-toggle .expand-button:after {
+    position: absolute;
+    top: 45%;
+    transform: translate(0, -50%);
+    content: '-';
+    left: 33%;
+}
+
+table.bookings-table .accordion-toggle td.collapsed .expand-button:after {
+    content: '+';
+    left: 20%;
+    top: 40%;
+}
+
+.rooms-table {
+    border-collapse: collapse;
+    border-bottom-style: solid;
+}
+
+.rooms-table tr, .rooms-table td {
+    border-bottom: none;
+}
+
+.rooms-table tr:nth-child(even):not(:last-child) {
+    border-bottom: 1px solid #cbccce; /* Border between rows */
+}
+
+.bookings-table tr:nth-child(even):not(:last-child) {
+    border-bottom: 1px solid black; /* Border between rows */
+}
+
+:where(.rooms-table,.bookings-table) :where(td,th):not(:last-child) {
+    border-right: 1px solid #cbccce; /* Border between columns */
+} .time-line-container {
+    --time-line-font-size: 0.5rem;
+    position: relative;
+    height: calc(1.75*(var(--time-line-font-size)) + 2px);
+    min-width: calc(5*(var(--time-line-font-size)));
+} .time-line-container .middle-line {
+        position: absolute;
+        width: 100%;
+        height: calc(0.3*(var(--time-line-font-size)));
+        min-height: 1px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #d9d9d9;
+    } .dates {
+    position: absolute;
+    padding: 0;
+    width: 100%;
+} .dates-flex {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 0;
+    justify-content: space-around;
+    flex-wrap: wrap;
+} .date {
+    text-align: center;
+    font-size: var(--time-line-font-size);
+    background-color: azure;
+    box-sizing: border-box;
+    line-height: var(--time-line-font-size);
+    border-radius: calc(0.5*(var(--time-line-font-size)));
+} .busy label, .busy label:hover {
+    background-color: var(--bs-info);
+} .start label, .start label:hover {
+    background: linear-gradient(90deg, transparent 0%, transparent 50%, var(--bs-info) 50%, var(--bs-info) 100%);
+} .end label, .end label:hover {
+    background: linear-gradient(90deg, var(--bs-info) 0%, var(--bs-info) 50%, transparent 50%, transparent 100%);
+} .control-label {
+    margin: 8px;
+} .date .btn {
+    line-height: var(--time-line-font-size);
+    padding: calc(.375*(var(--time-line-font-size))) calc(.75*(var(--time-line-font-size)));
+    font-size: var(--time-line-font-size);
+    border-radius: calc(.25*(var(--time-line-font-size)));
+} [data-month="1"] {
+    background-color: lightblue; /* Blue */
+    border-color: lightblue;
+    border: 1px solid lightblue;
+    color: lightblue;
+}
+/* February */
+[data-month="2"] {
+    background-color: pink; /* Red */
+    border-color: pink;
+    border: 1px solid pink;
+    color: pink;
+}
+/* March */
+[data-month="3"] {
+    background-color: purple; /* Green */
+    border-color: purple;
+    border: 1px solid purple;
+    color: purple;
+}
+/* April */
+[data-month="4"] {
+    background-color: #7bb665; /* Grass */
+    border-color: #7bb665;
+    border: 1px solid #7bb665;
+    color: #7bb665;
+}
+/* May */
+[data-month="5"] {
+    background-color: #C8A2C8; /* Lilac */
+    border-color: #C8A2C8;
+    border: 1px solid #C8A2C8;
+    color: #C8A2C8;
+}
+/* June */
+[data-month="6"] {
+    background-color: #FFA756; /* Pale Orange */
+    border-color: #FFA756;
+    border: 1px solid #FFA756;
+    color: #FFA756;
+}
+/* July */
+[data-month="7"] {
+    background-color: coral; /* Coral */
+    border-color: coral;
+    border: 1px solid coral;
+    color: coral;
+}
+/* August */
+[data-month="8"] {
+    background-color: orange; /* Orange */
+    border-color: orange;
+    border: 1px solid orange;
+    color: orange;
+}
+/* September */
+[data-month="9"] {
+    background-color: #B7410E; /* Rust */
+    border-color: #B7410E;
+    border: 1px solid #B7410E;
+    color: #B7410E;
+}
+/* October */
+[data-month="10"] {
+    background-color: maroon; /* Maroon */
+    border-color: maroon;
+    border: 1px solid maroon;
+    color: maroon;
+}
+/* November */
+[data-month="11"] {
+    background-color: gold; /* Gold */
+    border-color: gold;
+    border: 1px solid gold;
+    color: gold;
+}
+/* December */
+[data-month="12"] {
+    background-color: darkred; /* Dark Red */
+    border-color: darkred;
+    border: 1px solid darkred;
+    color: darkred;
+}
+/* Hover state */
+[data-month]:hover {
+    opacity: 0.8; /* Dim the color on hover */
+    cursor: pointer;
+} .inner-form {
+    display: flex;
+    width: 100%;
+    align-items: center;
+} .inner-form .input-field {
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    margin: 16px 8px;
+} .inner-form .input-field .icon-wrap {
+            top: 0;
+            left: 0;
+            width: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        } .inner-form .input-field section {
+            width: 100%;
+            min-height: 73px;
+        } .inner-form .input-field.picker-wrap {
+            flex-grow: 2;
+        } .inner-form .input-field.picker-wrap section {
+                display: flex;
+                margin: 0 10px;
+            } .inner-form .input-field.picker-wrap :where(input,select) {
+                min-width: 100%;
+                align-self: center;
+                width: max-content;
+                border-radius: 5px;
+                border: 1px solid #999;
+            } .inner-form .input-field.order-wrap {
+       /* display: none;*/
+    } .inner-form .input-field.search-wrap {
+            min-width: 190px;
+            padding-left: 10px;
+            border-right: 0;
+            flex-grow: 2;
+        } .inner-form .input-field.search-wrap .btn-search {
+                width: 100%;
+                border-radius: .25rem;
+                background: #17a2b8;
+                white-space: nowrap;
+                /* border-radius: .5px;*/
+                font-size: 20px;
+                color: #fff;
+                transition: all .2s ease-out,color .2s ease-out;
+                border: 0;
+                cursor: pointer;
+                font-weight: 400;
+            } @@media screen and (max-width: 992px) {
+    .inner-form {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+        .inner-form .input-field {
+            border-right: 0;
+        }
+
+            .inner-form .input-field section {
+                min-height: unset;
+            }
+} .price, .price * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} .price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #17a2b8;
+} ::selection {
+    color: #fff;
+    background: #17a2b8;
+} .wrapper {
+    background: #fff;
+    padding: 10px;
+} .price-input {
+    display: flex;
+    margin: 10px 0;
+} .price-input .field {
+        display: flex;
+        align-items: center;
+        justify-content: right;
+        flex-direction: row;
+    } .field input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    margin-left: 12px;
+    border-radius: 5px;
+    text-align: center;
+    border: 1px solid #999;
+    -moz-appearance: textfield;
+} input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+} .price-input .separator {
+    /*   width: 130px; */
+    width: 10px;
+    display: flex;
+    font-size: 19px;
+    align-items: center;
+    justify-content: center;
+} .slider {
+    height: 5px;
+    position: relative;
+    background: #ddd;
+    border-radius: 5px;
+} .slider .progress {
+        height: 100%;
+        left: 25%;
+        right: 25%;
+        position: absolute;
+        border-radius: 5px;
+        background: #17a2b8;
+    } .range-input {
+    position: relative;
+} .range-input input {
+        position: absolute;
+        width: 100%;
+        height: 5px;
+        top: -5px;
+        background: none;
+        pointer-events: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    } input[type="range"]::-webkit-slider-thumb {
+    height: 17px;
+    width: 17px;
+    border-radius: 50%;
+    background: #17a2b8;
+    pointer-events: auto;
+    -webkit-appearance: none;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+} input[type="range"]::-moz-range-thumb {
+    height: 17px;
+    width: 17px;
+    border: none;
+    border-radius: 50%;
+    background: #17a2b8;
+    pointer-events: auto;
+    -moz-appearance: none;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+} #download-data, #download-data + p {
+    display: inline-block;
+} #createBooking {
+    display: flex;
+    gap: 10px;
+} .form-group {
+    min-height: 2rem;
+    margin: 5px 0;
+}

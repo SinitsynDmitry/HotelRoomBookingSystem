@@ -1,0 +1,232 @@
+﻿@*
+******************************************************************************
+ *
+ * File: Index.cshtml
+ *
+ * Description: View for   controller  Index.cshtml action.
+ *
+ * Copyright (C) 2024 by Dmitry Sinitsyn
+ *
+ * Date: 4.1.2024	 Authors:  Dmitry Sinitsyn
+ *
+ *****************************************************************************
+*@
+
+@model HotelAdminApplication.ViewModels.SearchBookinsViewModel
+
+@{
+    ViewData["Title"] = "Bookings";
+}
+
+<h1>Bookings</h1>
+
+@* <p>
+    <a asp-controller="Rooms" asp-action="Index">Create New</a>
+</p> *@
+<form id="selectAndOrder_form" method="get" asp-action="Index">
+    <div class="inner-form">
+        <div class="input-field picker-wrap">
+            <div class="icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"></path>
+                </svg>
+            </div>
+            <section>
+                <input id="daterangepicker" type="text" name="daterange" value="@Model.SelectAndOrder?.DateRange?.ToString()" />
+            </section>
+        </div>
+        <div class="input-field picker-wrap">
+            <div class="icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M440-160q-17 0-28.5-11.5T400-200v-240L168-736q-15-20-4.5-42t36.5-22h560q26 0 36.5 22t-4.5 42L560-440v240q0 17-11.5 28.5T520-160h-80Zm40-308 198-252H282l198 252Zm0 0Z" /></svg>
+            </div>
+            <section>
+                <select id="rooms_select" name="selectedRoomId" class="form-select" value="@Model.SelectAndOrder?.SelectedRoomId">
+                    @foreach (var item in Model.RoomsList)
+                    {
+                        <option selected="@(Model.SelectAndOrder?.SelectedRoomId==item.Item1)" value="@item.Item1">@item.Item2</option>
+                    }
+                </select>
+            </section>
+        </div>
+        <div class="input-field picker-wrap">
+            <div class="icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M320-440v-287L217-624l-57-56 200-200 200 200-57 56-103-103v287h-80ZM600-80 400-280l57-56 103 103v-287h80v287l103-103 57 56L600-80Z" /></svg>
+            </div>
+            <section>
+                <select id="order_by" name="order_by" class="form-select" value="@Model.SelectAndOrder?.Order_by">
+                    <option selected="@(Model.SelectAndOrder?.Order_by=="start_asc")" value="start_asc">Date of entry asc</option>
+                    <option selected="@(Model.SelectAndOrder?.Order_by=="start_desc")" value="start_desc">Date of entry desc</option>
+
+                    <option selected="@(Model.SelectAndOrder?.Order_by=="room_asc")" value="room_asc">Room asc</option>
+                    <option selected="@(Model.SelectAndOrder?.Order_by=="room_desc")" value="room_desc">Room desc</option>
+
+                    <option selected="@(Model.SelectAndOrder?.Order_by=="customer_asc")" value="customer_asc">Customer asc</option>
+                    <option selected="@(Model.SelectAndOrder?.Order_by=="customer_desc")" value="customer_desc">Customer desc</option>
+                </select>
+            </section>
+        </div>
+        <div class="input-field search-wrap">
+            <input type="submit" value="SEARCH" class="btn btn-search" />
+        </div>
+    </div>
+</form>
+@if (Model.Bookings?.Count() > 0)
+{
+    var first = (Model.Bookings.FirstOrDefault());
+    var daterange = Model.SelectAndOrder?.DateRange?.ToString();
+    
+<table class="table bookings-table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">
+                    @Html.DisplayNameFor(model => first.Customer)
+            </th>
+            <th scope="col">
+                    @Html.DisplayNameFor(model => first.Room)
+            </th>
+            <th scope="col">
+                    @Html.DisplayNameFor(model => first.StartTime)
+            </th>
+            <th scope="col">
+                    @Html.DisplayNameFor(model => first.Duration)
+            </th>
+            <th scope="col">
+                    @Html.DisplayNameFor(model => first.Deadline)
+            </th>
+            <th scope="col">
+                    @Html.DisplayNameFor(model => first.Description)
+            </th>
+            <th scope="col">
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@{
+    var checkInTime = (TimeSpan)ViewData["CheckInTime"];
+    var cancellationLimit = (int)ViewData["CancellationLimit"];
+}
+
+@for (int i = 0; i < Model.Bookings.Count(); i++)
+{
+    var item = Model.Bookings.ElementAt(i);
+
+    item.SetCancellationDeadline(checkInTime, cancellationLimit);
+
+    var rowClass = item.IsIrrevocable? "table-secondary":"";
+
+    <tr class="@rowClass accordion-toggle">
+
+        <td class="collapsed"
+            id="accordion-@i"
+            data-bs-toggle="collapse"
+            data-bs-parent="#accordion-@i"
+            href="#collapse-@i"
+            aria-controls="collapse-@i">
+            <div class=" expand-button  btn btn-primary"></div>
+        </td >
+        <td>@item.Customer.FullName</td>
+        <td>@item.Room.Name</td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Duration)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Deadline)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>       
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+        </td>
+    </tr>
+    <tr id="collapse-@i" class="hide-table-padding collapse in p-3">
+        <td style="border-right:0;"></td>
+        <td colspan="7">
+            <div>
+                <div class="row" style="border-bottom: 1px solid #cbccce;margin-right: 0;">
+                    <div class="col-2">@Html.DisplayNameFor(model => item.Customer)</div>
+                    <div class="col-3">@Html.DisplayNameFor(model => item.Customer.Email): @item.Customer.Email</div>
+                    <div class="col-3">@Html.DisplayNameFor(model => item.Customer.ID_code): @item.Customer.ID_code</div>
+                    <div class="col-3">@Html.DisplayNameFor(model => item.Customer.PhoneNumber): @item.Customer.PhoneNumber</div>
+                    <div class="col-1"><a asp-controller="Accounts" asp-action="Details" asp-route-id="@item.Customer.Id">Go</a></div>
+                </div>
+                <div class="row" style="margin-right: 0;">
+                    <div class="col-2">@Html.DisplayNameFor(model => item.Room)</div>
+                    <div class="col-3">@Html.DisplayNameFor(model => item.Room.NumberOfBeds): @item.Room.NumberOfBeds</div>
+                    <div class="col-6">@Html.DisplayNameFor(model => item.Room.Description): @item.Room.Description</div>
+                    <div class="col-1"><a asp-controller="Rooms" asp-action="Details" asp-route-id="@item.Room.Id" asp-route-daterange="@daterange">Go</a></div>
+                </div>
+            </div>
+        </td>
+    </tr>
+}
+    </tbody>
+</table>
+}
+
+@section scripts {
+    <script>
+        $('#daterangepicker').daterangepicker({
+            "showDropdowns": true,
+            // "autoApply": true,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Tomorrow': [moment().add(1, 'days'), moment().add(1, 'days')],
+                'Next 7 Days': [moment(), moment().add(6, 'days')],
+                'Next 30 Days': [moment(), moment().add(29, 'days')],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Next Month': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
+            },
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " <-> ",
+                "applyLabel": "Apply",
+                "cancelLabel": "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel": "W",
+                "daysOfWeek": [
+                    "Su",
+                    "Mo",
+                    "Tu",
+                    "We",
+                    "Th",
+                    "Fr",
+                    "Sa"
+                ],
+                "monthNames": [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December"
+                ],
+                "firstDay": 1
+            },
+            "alwaysShowCalendars": true,
+            // "startDate": "25/12/2023",
+            // "endDate": "25/01/2024",
+            "minDate": "@DateTime.Now.Date",
+            "maxDate": "@DateTime.Now.AddYears(1).Date",
+            "opens": "center"
+        }, function (start, end, label) {
+            console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+        });
+
+    </script>
+}
+
+

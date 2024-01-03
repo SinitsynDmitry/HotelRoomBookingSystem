@@ -1,0 +1,185 @@
+﻿@*
+******************************************************************************
+ *
+ * File: _Timeline.cshtml
+ *
+ * Description: View for   controller  _Timeline.cshtml action.
+ *
+ * Copyright (C) 2024 by Dmitry Sinitsyn
+ *
+ * Date: 4.1.2024	 Authors:  Dmitry Sinitsyn
+ *
+ *****************************************************************************
+*@
+
+@model HotelApplication.ViewModels.TimeLineModel
+@{
+    <section class="time-line-container">
+        <div class="middle-line"></div>
+        <div class="dates">
+            <div class="dates-flex">
+                @for (int i = 0; i < Model.DaysList.Count(); i++)
+                {
+                    var day = Model.DaysList[i];
+                    var idControl = "day-" + day.Day + "-" + day.Month;
+                    var dateClass = "";
+                    var title = "Free";
+                    var start = Model.Bookings.Any(book => day.Date == book.StartTime.Date);
+                    var end = Model.Bookings.Any(book => day.Date == book.StartTime.AddDays(book.Duration).Date);
+                    var old = day.Date <= DateTimeOffset.UtcNow.Date;
+                    var busy = (start && end) || Model.Bookings.Any(book => day.Date > book.StartTime && day.Date < book.StartTime.AddDays(book.Duration));
+                    if (busy)
+                    {
+                        dateClass += "busy ";
+                        title = "Busy";
+                    }else if (start)
+                    {
+                         dateClass += "start ";
+                        
+                    }else if (end)
+                    {
+                        dateClass += "end ";
+                    }
+
+                    if (day.Day == 1)
+                    {
+                        <div class="date" data-month="@day.Month" title="@day.ToString("MMMM")">|</div>
+                    }
+
+                    <div class="date @dateClass" title="@title">
+                        @if (Model.IsActive && !old && !busy )
+                        {
+                          <input type="checkbox" class="btn-check time-line-check" data-sort="@i" data-value="@day.ToString("dd.MM.yyyy")" onclick="timeLineClick(this);" id="@idControl" autocomplete="off">
+                        }
+                        <label class="btn btn-outline-primary" for="@idControl">@day.Day</label>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </section>
+    <script>
+
+function timeLineClick(element) {
+
+    var checkedCheckboxes = document.querySelectorAll('.time-line-check:checked');
+    
+    var checkedCheckboxesArray = Array.from(checkedCheckboxes);
+
+     var labels = document.querySelectorAll('.time-line-check + label');
+            labels.forEach(function(label) {
+                    label.classList.remove('active');
+            });
+     var booking_Duration = document.getElementById('booking_Duration');
+     var booking_StartTime = document.getElementById('booking_StartTime');
+     var button = document.getElementById('booking_submit');
+      if(button != null){
+             button.disabled = true;
+         }
+
+    if(checkedCheckboxes.length == 0){
+        if(booking_StartTime != null){
+            booking_StartTime.value = "";
+        }
+        
+         if(booking_Duration != null){
+             booking_Duration.value = 0;
+         }
+        return;
+    }
+     var firstSelected = checkedCheckboxesArray[0];
+
+     var startValue = firstSelected.dataset.value;
+         if(booking_StartTime != null){
+             booking_StartTime.value = startValue;
+         }
+
+      if(checkedCheckboxes.length == 1){
+          if(booking_Duration != null){
+             booking_Duration.value = 0;
+         }
+          return;
+      }
+
+    if(checkedCheckboxes.length > 1){
+       
+        // Sort the array based on the data-sort attribute
+        checkedCheckboxesArray.sort(function(a, b) {
+            var sortA = parseInt(a.dataset.sort, 10) || 0;
+            var sortB = parseInt(b.dataset.sort, 10) || 0;
+            return sortA - sortB;
+        });
+
+        var lastSelected = element;
+       
+        if(firstSelected == element){
+            lastSelected = checkedCheckboxesArray[1]
+        } 
+
+        var firstSelectedValue = parseInt(firstSelected.dataset.sort, 10);
+        var lastSelectedValue = parseInt(lastSelected.dataset.sort, 10);
+
+          if(checkedCheckboxes.length > 2){
+
+               for (var i = 0; i < checkedCheckboxesArray.length; i++) {
+                    var checkbox = checkedCheckboxesArray[i];
+                    if(checkbox != firstSelected && checkbox != lastSelected){
+                         checkbox.checked = false;
+                    } 
+               }
+          }
+
+        var allCheckboxes = document.querySelectorAll('.time-line-check');
+        var allCheckboxesArray = Array.from(allCheckboxes);
+
+        var last = allCheckboxes[0];
+        var ignored = false;
+
+       for (var i = 0; i < allCheckboxes.length; i++) {
+            var checkbox = allCheckboxes[i];
+            var label = checkbox.nextElementSibling;var label = checkbox.nextElementSibling;
+            label.classList.remove('active');
+
+            var currentValue = parseInt(checkbox.dataset.sort, 10);
+            if(currentValue <= firstSelectedValue){
+                last = checkbox;
+                continue;
+            }
+            if(currentValue > lastSelectedValue){
+                ignored = true;
+                continue;
+            }
+            
+            var lastValue = parseInt(last.dataset.sort, 10);
+            if(!ignored){
+                if(last === checkbox || lastValue + 1 === currentValue){
+                    last = checkbox;
+                    
+                    label.classList.add('active');
+                    console.log(checkbox.dataset.sort);
+                    continue;
+                }
+                ignored = true;           
+           }
+          
+           checkbox.checked = false;
+        };
+
+        last.checked = true;
+        lastSelectedValue = parseInt(last.dataset.sort, 10);
+        var duration = lastSelectedValue - firstSelectedValue;
+
+         if(booking_Duration != null){
+             booking_Duration.value = duration;
+         }
+
+          if(button != null && duration > 0){
+             button.disabled = false;
+         }
+   }
+    
+}
+
+    </script>
+
+}

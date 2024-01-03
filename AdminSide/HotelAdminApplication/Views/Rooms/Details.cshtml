@@ -1,0 +1,81 @@
+﻿@*
+******************************************************************************
+ *
+ * File: Details.cshtml
+ *
+ * Description: View for   controller  Details.cshtml action.
+ *
+ * Copyright (C) 2024 by Dmitry Sinitsyn
+ *
+ * Date: 4.1.2024	 Authors:  Dmitry Sinitsyn
+ *
+ *****************************************************************************
+*@
+
+@using HotelAdminApplication.ViewModels
+@using HotelModels
+@model HotelModels.RoomAndBookings
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Room</h4>
+    <hr />
+
+    @if (Model != null)
+    {
+        <div style="margin-bottom: 10px;">
+            <dl class="row">
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Room.Name)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Room.Name)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Room.NumberOfBeds)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Room.NumberOfBeds)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Room.Price)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Room.Price)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Room.Description)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Room.Description)
+                </dd>
+            </dl>
+            <hr />
+        </div>
+        var daysList = (List<DateTimeOffset>)ViewData["Days"];
+        var daterange = (string)ViewData["DateRange"];
+        var timeLineModel = new TimeLineModel(daysList, Model.Bookings, false);
+               
+        <div class="form-group">
+            <label class="control-label">@daterange</label>
+            <partial name="_TimeLine" model="@timeLineModel" />
+        </div>  
+    }
+</div>
+    
+    <div style="margin-top: 10px;">
+    @if (Model != null)
+    {
+        <div>
+            <a asp-action="Edit" class="btn btn-primary" asp-route-id="@Model?.Room.Id">Edit room</a>
+        </div>
+    }
+    <div>
+        <a asp-action="Index">Go to Rooms List</a>
+    </div>
+</div>
