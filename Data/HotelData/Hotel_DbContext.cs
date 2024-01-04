@@ -36,18 +36,5 @@ namespace HotelData
         /// </summary>
         public DbSet<Booking> Bookings { get; set; }
 
-        /// <summary>
-        /// Ons the configuring.
-        /// </summary>
-        /// <param name="optionsBuilder">The options builder.</param>
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var connection = "Server=(localdb)\\mssqllocaldb;Database=HotelApplication;Trusted_Connection=True;MultipleActiveResultSets=true";
-            optionsBuilder.UseSqlServer(connection, options =>
-            {
-                //options.MigrationsHistoryTable("__EFMigrationsHistory");
-                //options.MigrationsAssembly("HotelApplication");
-            });
-        }
     }
 }
