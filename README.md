@@ -1,85 +1,90 @@
-# Hotellide registreerimise ja tühistamise süsteem.
-## Üldine.
+<!-- README.et.md -->
+See on README fail Eesti keeles.
 
-Süsteem koosneb kahest osast, mis töötavad ühise andmebaasiga.
+[English](README.md)
 
-## Rakendus administreerimiseks(HotelAdminApplication).
+# Hotel registration and cancellation system.
+## General.
 
-Juurdepääsu taseme "**Manager**" kasutajad saavad:
+The system consists of two parts that work with a common database.
 
--   Lisada ruum
+## Application for administration(HotelAdminApplication).
+
+Users with access level "**Manager**" can:
+
+- Add space
     
--   Muuta ruumide andmeid
+- Change room data
     
--   Eemalda ruum
+- Remove space
     
--   Vaadata broneeringuid
+- View bookings
     
--   Vaadata klientide andmeid
+- View customer data
 
-Süsteem võimaldab kasutajatel, kellel on juurdepääsutase "**Administraator**", teha kõiki "**Manager**" taseme toiminguid ning lisada **uusi süsteemi kasutajaid** mistahes juurdepääsu tasemetele.
+The system allows users with the access level "**Administrator**" to perform all actions of the "**Manager**" level and to add **new system users** to any access levels.
 
-## Rakendus klientidele(HotelApplication).
+## Application for customers (HotelApplication).
 
-Süsteemi kasutamiseks peab klient registreeruma ja süsteemi sisse logima.
+To use the system, the customer must register and log in to the system.
 
-Süsteem võimaldab kasutajatel otsida vabu ruume, filtreerides ajavahemikku, magamiskohtade arvu ja hinda.
+The system allows users to search for available rooms by filtering time period, number of beds and price.
 
-Valides ruumi, saab kasutaja seda üksikasjalikumalt vaadata ja broneerida vajalikuks ajavahemikuks.
+By selecting a room, the user can view it in more detail and book it for the required time period.
 
-Samuti saab igaüks **oma broneeringuid** kontrollida.
- **Broneeringut ei saa tühistada hiljem kui 3 päeva enne majutuse algust**.
+Also, everyone can check **their reservations**.
+  **The reservation cannot be canceled later than 3 days before the start of the stay**.
 
-## Paigaldus.
+## Installation.
 
-Fail: appsettings.json
+File: appsettings.json
 
--   "**DBConnection**" - Andmebaasiühenduse rida
+- "**DBConnection**" - Database connection string
     
--   "**ApiConnection**" - Ühendamine API-ga
+- "**ApiConnection**" - Connecting to an API
 
-Normaalse töö jaoks on vaja iga paari jaoks säilitada "ApiKey".
+For normal operation, it is necessary to maintain an "ApiKey" for each pair.
 
--   AdminSide\HotelAdminApi
+- AdminSide\HotelAdminApi
     
--   AdminSide\HotelAdminApplication  
-ja
--   CustomerSide\HotelApplication
+- AdminSide\HotelAdminApplication
+and
+- CustomerSide\HotelApplication
     
--   CustomerSide\HotelCustomerApi
+- CustomerSide\HotelCustomerApi
 
-### Näiteks:
-    cd AdminSide\HotelAdminApi
-    dotnet user-secrets init
-    dotnet user-secrets set "ApiKey" "6CBxzdYcEgNDrRhMbDpkBF7e4d4Kib46dwL9ZE5egiL0iL5Y3dzREUBSUYVUwUkN"
+### For example:
+     cd AdminSide\HotelAdminApi
+     dotnet user-secrets init
+     dotnet user-secrets set "ApiKey" "6CBxzdYcEgNDrRhMbDpkBF7e4d4Kib46dwL9ZE5egiL0iL5Y3dzREUBSUYVUwUkN"
     
-    cd AdminSide\HotelAdminApi
-    dotnet user-secrets init
-    dotnet user-secrets set "ApiKey" "6CBxzdYcEgNDrRhMbDpkBF7e4d4Kib46dwL9ZE5egiL0iL5Y3dzREUBSUYVUwUkN"
+     cd AdminSide\HotelAdminApi
+     dotnet user-secrets init
+     dotnet user-secrets set "ApiKey" "6CBxzdYcEgNDrRhMbDpkBF7e4d4Kib46dwL9ZE5egiL0iL5Y3dzREUBSUYVUwUkN"
     
-    cd CustomerSide\HotelApplication
-    dotnet user-secrets init
-    dotnet user-secrets set "ApiKey" "YourSuperPassword"
+     cd CustomerSide\HotelApplication
+     dotnet user-secrets init
+     dotnet user-secrets set "ApiKey" "YourSuperPassword"
       
-    cd CustomerSide\HotelCustomerApi
-    dotnet user-secrets init
-    dotnet user-secrets set "ApiKey" "YourSuperPassword"
-Süsteem esimesel käivitamisel loob kaks süsteemi kasutajat **ühise parooliga**.
+     cd CustomerSide\HotelCustomerApi
+     dotnet user-secrets init
+     dotnet user-secrets set "ApiKey" "YourSuperPassword"
+The system creates two system users **with a common password** at the first startup.
 admin@hotels.com,
 manager@hotels.com
-Nende jaoks on vaja säilitada ka **salasõna**.
-*Salasõna peab olema vähemalt 6 tähemärki pikk.
-Salasõna peab olema vähemalt üks mittetähtnumbriline märk.
-Salasõna peab olema vähemalt üks väiketäht ('a'-'z').
-Salasõna peab olema vähemalt üks suurtäht (A-Z).*
-### Näiteks:
+You also need to store a **password** for them.
+*Password must be at least 6 characters long.
+Password must be at least one non-alphanumeric character.
+Password must contain at least one lowercase letter ('a'-'z').
+Password must contain at least one uppercase letter (A-Z).*
+### For example:
 
-    cd AdminSide\HotelAdminApplication
-    dotnet user-secrets set SeedUserPW "#6CBxzdYcEgNDr"
+     cd AdminSide\HotelAdminApplication
+     dotnet user-secrets set SeedUserPW "#6CBxzdYcEgNDr"
 
-  Kõik on valmis, käivitage administraatori osa(**HotelAdminApplication** ja **HotelAdminApi**).
+   Everything is ready, start the admin part(**HotelAdminApplication** and **HotelAdminApi**).
 
 ( admin@hotels.com - "#6CBxzdYcEgNDr")
-Minge portaali ja looge mõned "Room".
+Go to the portal and create some "Room".
 
-Nüüd "**HotelApplication**" portaali sisenedes saate need toad valida ja broneeringuid teha.
+Now by entering the "**HotelApplication**" portal you can select these rooms and make reservations.
