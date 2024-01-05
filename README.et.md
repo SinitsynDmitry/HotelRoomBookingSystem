@@ -69,14 +69,19 @@ ja
     cd CustomerSide\HotelCustomerApi
     dotnet user-secrets init
     dotnet user-secrets set "ApiKey" "YourSuperPassword"
+
 Süsteem esimesel käivitamisel loob kaks süsteemi kasutajat **ühise parooliga**.
+
 admin@hotels.com,
 manager@hotels.com
+
 Nende jaoks on vaja säilitada ka **salasõna**.
+
 *Salasõna peab olema vähemalt 6 tähemärki pikk.
 Salasõna peab olema vähemalt üks mittetähtnumbriline märk.
 Salasõna peab olema vähemalt üks väiketäht ('a'-'z').
 Salasõna peab olema vähemalt üks suurtäht (A-Z).*
+
 ### Näiteks:
 
     cd AdminSide\HotelAdminApplication
@@ -84,7 +89,8 @@ Salasõna peab olema vähemalt üks suurtäht (A-Z).*
 
   Kõik on valmis, käivitage administraatori osa(**HotelAdminApplication** ja **HotelAdminApi**).
 
-( admin@hotels.com - "#6CBxzdYcEgNDr")
-Minge portaali ja looge mõned "Room".
+( admin@hotels.com - "#6CBxzdYcEgNDr" )
+
+Minge portaali(**HotelAdminApplication**) ja looge mõned "Room".
 
 Nüüd "**HotelApplication**" portaali sisenedes saate need toad valida ja broneeringuid teha.

@@ -69,14 +69,19 @@ and
      cd CustomerSide\HotelCustomerApi
      dotnet user-secrets init
      dotnet user-secrets set "ApiKey" "YourSuperPassword"
+
 The system creates two system users **with a common password** at the first startup.
+
 admin@hotels.com,
 manager@hotels.com
+
 You also need to store a **password** for them.
+
 *Password must be at least 6 characters long.
 Password must be at least one non-alphanumeric character.
 Password must contain at least one lowercase letter ('a'-'z').
 Password must contain at least one uppercase letter (A-Z).*
+
 ### For example:
 
      cd AdminSide\HotelAdminApplication
@@ -84,7 +89,8 @@ Password must contain at least one uppercase letter (A-Z).*
 
    Everything is ready, start the admin part(**HotelAdminApplication** and **HotelAdminApi**).
 
-( admin@hotels.com - "#6CBxzdYcEgNDr")
-Go to the portal and create some "Room".
+( admin@hotels.com - "#6CBxzdYcEgNDr" )
+
+Go to the portal(**HotelAdminApplication**) and create some "Room".
 
 Now by entering the "**HotelApplication**" portal you can select these rooms and make reservations.

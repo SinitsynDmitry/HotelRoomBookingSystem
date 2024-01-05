@@ -13,45 +13,54 @@
 
 using HotelModels;
 using HotelModels.Helpers;
-using Humanizer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace HotelAdminApplication.Data
 {
     public static class SeedData
     {
+        /// <summary>
+        /// Initializes the.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="testUserPw">The test user pw.</param>
+        /// <returns>A Task.</returns>
         public static async Task Initialize(IServiceProvider serviceProvider, string testUserPw)
         {
-            //using (var context = new ApplicationDbContext(
-            //    serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
-            {
-                // For sample purposes seed both with the same password.
-                // Password is set with the following:
-                // dotnet user-secrets set SeedUserPW <pw>
-                //Passwords must have at least one non alphanumeric character.
-                //Passwords must have at least one lowercase('a' - 'z').
-                //Passwords must have at least one uppercase('A' - 'Z').
+            // For sample purposes seed both with the same password.
+            // Password is set with the following:
 
-                // The admin user can do anything
-                var admin = await EnsureUser(serviceProvider, testUserPw, "admin@hotels.com", "Admin");
-                await EnsureRole(serviceProvider, admin, Constants.AdministratorsRole);
+            // dotnet user-secrets set SeedUserPW <pw>
 
-                // allowed user can create and edit rooms
-                var manager = await EnsureUser(serviceProvider, testUserPw, "manager@hotels.com", "Manager");
-                await EnsureRole(serviceProvider, manager, Constants.ManagersRole);
+            //Password must be at least 6 characters long.
+            //Passwords must have at least one non alphanumeric character.
+            //Passwords must have at least one lowercase('a' - 'z').
+            //Passwords must have at least one uppercase('A' - 'Z').
 
-                //SeedDB(context, adminID);
-            }
+            // The admin user can do anything
+            var admin = await EnsureUser(serviceProvider, testUserPw, "admin@hotels.com", "Admin");
+            await EnsureRole(serviceProvider, admin, Constants.AdministratorsRole);
+
+            // allowed user can create and edit rooms
+            var manager = await EnsureUser(serviceProvider, testUserPw, "manager@hotels.com", "Manager");
+            await EnsureRole(serviceProvider, manager, Constants.ManagersRole);
+
         }
 
+        /// <summary>
+        /// Ensures the user.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="testUserPw">The test user pw.</param>
+        /// <param name="email">The email.</param>
+        /// <param name="userName">The user name.</param>
+        /// <returns>A Task.</returns>
         private static async Task<CustomerUser> EnsureUser(IServiceProvider serviceProvider,
                                                     string testUserPw, string email, string userName)
         {
             var userManager = serviceProvider.GetService<UserManager<CustomerUser>>();
             var userStore = serviceProvider.GetService<IUserStore<CustomerUser>>();
-           var emailStore=(IUserEmailStore<CustomerUser>)userStore;
+            var emailStore = (IUserEmailStore<CustomerUser>)userStore;
 
             var user = await userManager.FindByNameAsync(email);
             if (user == null)
@@ -84,7 +93,14 @@ namespace HotelAdminApplication.Data
             return user;
         }
 
-        private static async Task<IdentityResult> EnsureRole(IServiceProvider serviceProvider,CustomerUser user, string role)
+        /// <summary>
+        /// Ensures the role.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="user">The user.</param>
+        /// <param name="role">The role.</param>
+        /// <returns>A Task.</returns>
+        private static async Task<IdentityResult> EnsureRole(IServiceProvider serviceProvider, CustomerUser user, string role)
         {
             var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
 
@@ -112,4 +128,3 @@ namespace HotelAdminApplication.Data
         }
     }
 }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.

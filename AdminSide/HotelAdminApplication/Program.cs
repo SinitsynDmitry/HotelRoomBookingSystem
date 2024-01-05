@@ -18,6 +18,7 @@ using HotelModels.Helpers;
 using HotelModels.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,7 +75,10 @@ using (var scope = app.Services.CreateScope())
     context.Database.Migrate();
     // requires using Microsoft.Extensions.Configuration;
     // Set password with the Secret Manager tool.
+
     // dotnet user-secrets set SeedUserPW <pw>
+
+    //Password must be at least 6 characters long.
     //Passwords must have at least one non alphanumeric character.
     //Passwords must have at least one lowercase('a' - 'z').
     //Passwords must have at least one uppercase('A' - 'Z').
