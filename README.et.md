@@ -1,7 +1,7 @@
-<!-- README.md -->
-This is the English version of the README.
+<!-- README.et.md -->
+See on README fail Eesti keeles.
 
-[Eesti keeles](README.et.md)
+[English](README.md)
 
 # Hotellide registreerimise ja tühistamise süsteem.
 ## Üldine.
