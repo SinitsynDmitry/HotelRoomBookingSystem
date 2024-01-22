@@ -68,28 +68,27 @@ namespace HotelAdminApi.Repository
         /// <returns>A Task.</returns>
         public async Task<IEnumerable<Booking>> GetBookingsAsync(string order_by = "", int roomId = -1)
         {
+            var bookings = _context.Bookings.Where(b => roomId < 0 || b.Room.Id == roomId).Include(b => b.Room).Include(b => b.Customer);
+
             switch (order_by)
             {
                 case "start_asc":
-                    return await _context.Bookings.Where(b => roomId < 0 || b.Room.Id == roomId).Include(b => b.Room).Include(b => b.Customer).OrderBy(s => s.StartTime).ToListAsync();
-                    break;
+                    return await bookings.OrderBy(s => s.StartTime).ToListAsync();
                 case "customer_asc":
-                    return await _context.Bookings.Where(b => roomId < 0 || b.Room.Id == roomId).Include(b => b.Room).Include(b => b.Customer).OrderBy(s => s.Customer.FullName).ToListAsync();
-                    break;
+                    return await bookings.OrderBy(s => (s.Customer.FirstName + " " + s.Customer.Surname)).ToListAsync();
+
                 case "customer_desc":
-                    return await _context.Bookings.Where(b => roomId < 0 || b.Room.Id == roomId).Include(b => b.Room).Include(b => b.Customer).OrderByDescending(s => s.Customer.FullName).ToListAsync();
-                    break;
+                    return await bookings.OrderByDescending(s => (s.Customer.FirstName + " " + s.Customer.Surname)).ToListAsync();
 
                 case "room_asc":
-                    return await _context.Bookings.Where(b => roomId < 0 || b.Room.Id == roomId).Include(b => b.Room).Include(b => b.Customer).OrderBy(s => s.Room.Name).ToListAsync();
-                    break;
+                    return await bookings.OrderBy(s => s.Room.Name).ToListAsync();
+
                 case "room_desc":
-                    return await _context.Bookings.Where(b => roomId < 0 || b.Room.Id == roomId).Include(b => b.Room).Include(b => b.Customer).OrderByDescending(s => s.Room.Name).ToListAsync();
-                    break;
+                    return await bookings.OrderByDescending(s => s.Room.Name).ToListAsync();
 
                 default:
-                    return await _context.Bookings.Where(b => roomId < 0 || b.Room.Id == roomId).Include(b => b.Room).Include(b => b.Customer).OrderByDescending(s => s.StartTime).ToListAsync();
-                    break;
+                    return await bookings.OrderByDescending(s => s.StartTime).ToListAsync();
+
             }
         }
 
