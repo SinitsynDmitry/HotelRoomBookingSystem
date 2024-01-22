@@ -12,11 +12,11 @@ The system consists of two parts that work with a common database.
 
 Users with access level "**Manager**" can:
 
-- Add space
+- Add Room
     
-- Change room data
+- Change Room data
     
-- Remove space
+- Remove Room
     
 - View bookings
     
@@ -26,11 +26,11 @@ The system allows users with the access level "**Administrator**" to perform all
 
 ## Application for customers (HotelApplication).
 
-To use the system, the customer must register and log in to the system.
+To use the system, the customer must register and log in.
 
-The system allows users to search for available rooms by filtering time period, number of beds and price.
+The system allows users to search for available rooms by filtering time, number of beds, and price.
 
-By selecting a room, the user can view it in more detail and book it for the required time period.
+By selecting a room, the user can view it in more detail and book it for the required period.
 
 Also, everyone can check **their reservations**.
   **The reservation cannot be canceled later than 3 days before the start of the stay**.
@@ -91,6 +91,6 @@ Password must contain at least one uppercase letter (A-Z).*
 
 ( admin@hotels.com - "#6CBxzdYcEgNDr" )
 
-Go to the portal(**HotelAdminApplication**) and create some "Room".
+Go to the portal(**HotelAdminApplication**) and create a "Room".
 
 Now by entering the "**HotelApplication**" portal you can select these rooms and make reservations.
